@@ -9,6 +9,17 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // MARK: - IBOutlet Properties
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
+    // MARK: - IBAction Properties
+    
+    @IBAction func redrawActionButton(sender: UIButton) {
+    }
+    
+    // MARK: - Methods Override
 
     override func viewDidLoad() {
         super.viewDidLoad()
