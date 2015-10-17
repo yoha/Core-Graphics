@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     
     var currentDrawType = 0 {
         didSet {
-            if self.currentDrawType > 2 { self.currentDrawType = 0 }
+            if self.currentDrawType > 3 { self.currentDrawType = 0 }
         }
     }
     
@@ -34,6 +34,8 @@ class ViewController: UIViewController {
             self.drawShapeOf("circle")
         case 2:
             self.drawCheckerboard()
+        case 3:
+            self.drawRotatedSquares()
         default:
             break
         }
@@ -74,6 +76,28 @@ class ViewController: UIViewController {
                 }
             }
         }
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        self.imageView.image = image
+    }
+    
+    func drawRotatedSquares() {
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(512, 512), false, 0)
+        guard let rotatedSquaresGraphicsContext = UIGraphicsGetCurrentContext() else { return }
+        CGContextTranslateCTM(rotatedSquaresGraphicsContext, 256, 256)
+        
+        let rotations = 16
+        let amount = M_PI_2 / Double(rotations)
+        
+        for _ in 0 ..< rotations {
+            CGContextRotateCTM(rotatedSquaresGraphicsContext, CGFloat(amount))
+            CGContextAddRect(rotatedSquaresGraphicsContext, CGRectMake(-128, -128, 256, 256))
+        }
+        
+        CGContextSetStrokeColorWithColor(rotatedSquaresGraphicsContext, UIColor.blackColor().CGColor)
+        CGContextStrokePath(rotatedSquaresGraphicsContext)
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
