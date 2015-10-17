@@ -29,7 +29,9 @@ class ViewController: UIViewController {
         
         switch self.currentDrawType {
         case 0:
-            self.drawRectangle()
+            self.drawShapeOf("rectangle")
+        case 1:
+            self.drawShapeOf("circle")
         default:
             break
         }
@@ -40,7 +42,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.drawRectangle()
+        self.drawShapeOf("rectangle")
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,7 +52,7 @@ class ViewController: UIViewController {
 
     // MARK: - Local Methods
     
-    func drawRectangle() {
+    func drawShapeOf(shape: String) {
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(512, 512), false, 0)
         guard let currentGraphicsContext = UIGraphicsGetCurrentContext() else { return }
         
@@ -60,7 +62,8 @@ class ViewController: UIViewController {
         CGContextSetStrokeColorWithColor(currentGraphicsContext, UIColor.blackColor().CGColor)
         CGContextSetLineWidth(currentGraphicsContext, 10)
         
-        CGContextAddRect(currentGraphicsContext, cgRect)
+        if shape == "rectangle" { CGContextAddRect(currentGraphicsContext, cgRect) }
+        else if shape == "circle" { CGContextAddEllipseInRect(currentGraphicsContext, cgRect) }
         CGContextDrawPath(currentGraphicsContext, CGPathDrawingMode.FillStroke)
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
