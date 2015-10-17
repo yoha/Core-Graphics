@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     
     var currentDrawType = 0 {
         didSet {
-            if self.currentDrawType > 3 { self.currentDrawType = 0 }
+            if self.currentDrawType > 4 { self.currentDrawType = 0 }
         }
     }
     
@@ -36,6 +36,8 @@ class ViewController: UIViewController {
             self.drawCheckerboard()
         case 3:
             self.drawRotatedSquares()
+        case 4:
+            self.drawLines()
         default:
             break
         }
@@ -76,6 +78,36 @@ class ViewController: UIViewController {
                 }
             }
         }
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        self.imageView.image = image
+    }
+    
+    func drawLines() {
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(512, 512), false, 0)
+        guard let linesGraphicsContext = UIGraphicsGetCurrentContext() else { return }
+        CGContextTranslateCTM(linesGraphicsContext, 256, 256)
+        
+        var first = true
+        var length: CGFloat = 256
+        
+        for _ in 0 ..< 256 {
+            CGContextRotateCTM(linesGraphicsContext, CGFloat(M_PI_2))
+            
+            if first {
+                CGContextMoveToPoint(linesGraphicsContext, length, 50)
+                first = false
+            }
+            else {
+                CGContextAddLineToPoint(linesGraphicsContext, length, 50)
+            }
+            length *= 0.99
+        }
+        
+        CGContextSetStrokeColorWithColor(linesGraphicsContext, UIColor.blackColor().CGColor)
+        CGContextStrokePath(linesGraphicsContext)
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
