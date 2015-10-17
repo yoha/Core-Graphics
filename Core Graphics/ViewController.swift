@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     
     var currentDrawType = 0 {
         didSet {
-            if self.currentDrawType > 4 { self.currentDrawType = 0 }
+            if self.currentDrawType > 5 { self.currentDrawType = 0 }
         }
     }
     
@@ -38,6 +38,8 @@ class ViewController: UIViewController {
             self.drawRotatedSquares()
         case 4:
             self.drawLines()
+        case 5:
+            self.drawImagesAndText()
         default:
             break
         }
@@ -83,6 +85,28 @@ class ViewController: UIViewController {
         UIGraphicsEndImageContext()
         
         self.imageView.image = image
+    }
+    
+    func drawImagesAndText() {
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(512, 512), false, 0)
+        let _ = UIGraphicsGetCurrentContext()
+        
+        let paragraphyStyle = NSMutableParagraphStyle()
+        paragraphyStyle.alignment = .Center
+        
+        let attributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Thin", size: 36)!, NSParagraphStyleAttributeName: paragraphyStyle]
+        
+        let string: NSString = "The best-laid schemes o'\nmice an' men gang aft agley"
+        string.drawWithRect(CGRectMake(32, 32, 448, 448), options: .UsesLineFragmentOrigin, attributes: attributes, context: nil)
+        
+        let mouseImage = UIImage(named: "mouse")
+        mouseImage?.drawAtPoint(CGPointMake(300, 150))
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        self.imageView.image = image
+        
     }
     
     func drawLines() {
